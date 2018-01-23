@@ -20,8 +20,15 @@ class EdTech(object):
             user = tweet["user"]["screen_name"] # user's screen_name
             bio = tweet["user"]["description"] # user's bio
             text = tweet["text"] # text of the tweet
+            user_location = tweet['user']['location']
+            geo = tweet['geo']
+            retweet_count = tweet['retweet_count']
+            created_at = tweet['created_at']
+            coords = tweet['coordinates']
+            print(coords, geo, user_location)
             count += 1
+            # print(tweet['hashtag'])
             print("tweet id: ", tweet_id, "   sent on: ", date, "   tweeted by: @", user, sep="")
             print(text)
-            print(self.get_hastags(text))
+        # print(tweets[0].keys())
         print(count, " tweets were crawled")
