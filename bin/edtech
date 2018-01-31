@@ -6,5 +6,6 @@ from edtech import edtech
 from config import config
 
 print (config.twitter)
-runner = edtech.EdTech("EdTech", config.twitter)
+print (config.mongo)
+runner = edtech.EdTech("EdTech", config)
 runner.run()
