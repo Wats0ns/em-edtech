@@ -29,7 +29,6 @@ class EdTech(object):
         return self.twitter.search(q=query, count=count, tweet_mode="extended", extended_tweet="full_text", since_id=max_id)
 
     def run(self):
-        raise ValueError
         max_id = self.get_max_id()
         tweets = self.get_search(self.keyword, 10, max_id)
         count = 0
