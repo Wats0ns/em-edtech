@@ -1,11 +1,25 @@
 #!/usr/bin/python3
 import sys
 sys.path.append('.')
+import traceback
+import logging
 
 from edtech import edtech
 from config import config
 
+LOG_FILENAME = 'edtech.out'
+logging.basicConfig(filename=LOG_FILENAME,
+                    level=logging.DEBUG,
+                    )
+
 print (config.twitter)
 print (config.mongo)
-runner = edtech.EdTech("EdTech", config)
-runner.run()
+logging.debug("\n\nINIT")
+try:
+    runner = edtech.EdTech("edtech", config, logging)
+    runner.run()
+except Exception as e:
+    print(e)
+    logging.error(sys.exc_info())
+    logging.error(traceback.format_exc())
+    sys.exit(1)
