@@ -22,9 +22,13 @@ with open("keywords.txt") as f:
 
 try:
     runner = edtech.EdTech(keywords, config, logging)
-    runner.run()
+    if len(sys.argv) == 2 and sys.argv[1] == '--refresh':
+        runner.refresh()
+    else:
+        runner.run()
 except Exception as e:
     print(e)
+    print(traceback.format_exc())
     logging.error(sys.exc_info())
     logging.error(traceback.format_exc())
     sys.exit(1)
