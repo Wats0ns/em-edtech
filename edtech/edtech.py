@@ -67,9 +67,9 @@ class EdTech(object):
                     item = Tweet(tweet._json)
                     count += 1
                     item_ready = item.format_save()
-                    with open('data.json', 'w') as outfile:
-                        json.dump(item_ready, outfile)
-                        sys.exit(0)
+                    # with open('data.json', 'w') as outfile:
+                    #     json.dump(item_ready, outfile)
+                    #     sys.exit(0)
                     self.save_tweet(item_ready)
         self.logging.debug('END: {nb} tweets were crawled'.format(nb=count))
         print(count, " tweets were crawled")
