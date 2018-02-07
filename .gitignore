@@ -1,4 +1,5 @@
 config/config.py
+launch_exporter.sh
 *.json
 *.out
 edtech/__pycache__/*

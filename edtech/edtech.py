@@ -2,6 +2,8 @@ import pymongo
 import sys
 import json
 import tweepy
+from multiprocessing.dummy import Pool as ThreadPool
+from itertools import repeat
 sys.path.append('./edtech')
 from tweet import Tweet
 
@@ -32,16 +34,21 @@ class EdTech(object):
         print('Looking for: {query} since {max_id}'.format(query=query, max_id=max_id))
         return self.twitter.search(q=query, count=count, tweet_mode="extended", extended_tweet="full_text", since_id=max_id)
 
+    def refresher(self, item):
+        del item["_id"]
+        tweet = Tweet(item.copy())
+        item = tweet.format_save()
+        print ("Updated tweet {id}".format(id=item["id"]))
+        return self.save_tweet(item)
+
     def refresh(self):
         """
         This function is used to refresh the data in DB when the content has been changed
         """
-        for item in self.db.tweets.find({}):
-            del item["_id"]
-            tweet = Tweet(item.copy())
-            item = tweet.format_save()
-            print ("Updated tweet {id}".format(id=item["id"]))
-            self.save_tweet(item)
+        pool = ThreadPool(6)
+        tweets = self.db.tweets.find({})
+        return pool.map(self.refresher, tweets)
+
 
     def save_tweet(self, item):
         return self.db.tweets.update({'id': item['id']}, item, upsert=True)
@@ -59,9 +66,10 @@ class EdTech(object):
                 for tweet in tweets:
                     item = Tweet(tweet._json)
                     count += 1
-                    # with open('data.json', 'w') as outfile:
-                    #     json.dump(tweet._json, outfile)
                     item_ready = item.format_save()
+                    with open('data.json', 'w') as outfile:
+                        json.dump(item_ready, outfile)
+                        sys.exit(0)
                     self.save_tweet(item_ready)
         self.logging.debug('END: {nb} tweets were crawled'.format(nb=count))
         print(count, " tweets were crawled")
