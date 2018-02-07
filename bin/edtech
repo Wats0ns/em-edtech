@@ -15,8 +15,13 @@ logging.basicConfig(filename=LOG_FILENAME,
 print (config.twitter)
 print (config.mongo)
 logging.debug("\n\nINIT")
+keywords = []
+with open("keywords.txt") as f:
+    for line in f.readlines():
+        keywords.append(line)
+
 try:
-    runner = edtech.EdTech("edtech", config, logging)
+    runner = edtech.EdTech(keywords, config, logging)
     runner.run()
 except Exception as e:
     print(e)

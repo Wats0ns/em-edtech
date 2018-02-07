@@ -19,7 +19,7 @@ class Tweet:
 
     @staticmethod
     def extract_hashtags(tweet):
-        return [entity["text"] for entity in tweet.entities["hashtags"]]
+        return [entity["text"].lower() for entity in tweet.entities["hashtags"]]
 
     def format_save(self):
         return self.json
